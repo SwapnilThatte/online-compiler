@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <!-- <script src="script.js" defer></script> -->
+    <title>Document</title>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">ProCode</div>
+        <div class="navitems">
+            <a href="#" class="navlink">About this site</a>
+        </div>
+    </nav>
+
+    <main class="main">
+        <div class="code-section">
+            <form method="post" class="form">
+                <select name="language" id="language" class="lang-selector">
+                    <option value="py">Python</option>
+                    <option value="js">JavaScript</option>
+                    <option value="cpp">C++</option>
+                    <option value="c">C</option>
+                </select>
+                <br>
+                <% if(prevcode !=null) { %>
+                    <textarea type="text" class="code-input" name="code" id="code" contenteditable="true" required><%= prevcode %></textarea>
+                <% } %>
+
+                <% if(prevcode ==null) { %>
+                    <textarea type="text" class="code-input" name="code" id="code" contenteditable="true" required></textarea>
+
+                    <% } %>
+                    
+                <br>
+                <button type="submit" id="submit_btn" class="code-submit-btn">Submit</button>
+            </form>
+        </div>
+        <div class="output-section">
+            <span class="op-heading">Output</span>
+            <% if(output != null && error == null) {%>
+            <h1 class="op-success">Execution Successful </h1>
+            <p class="op-success-text"><%= output %></p>
+                <% } %>
+                <% if(output==null && error !=null) {%>
+                    <h3 class="op-err">Error</h3>
+                    <p class="op-err-text"><%= error %></p>
+                        <%}%>
+
+        </div>
+    </main>
+
+    <!-- <h1>Compiler</h1>
+    <br>
+    <form method="post">
+        <select name="language" id="language">
+            <option value="py">Python</option>
+            <option value="js">JavaScript</option>
+            <option value="cpp">C++</option>
+            <option value="c">C</option>
+            <option value="java">Java</option>
+        </select>
+        <br>
+    <textarea name="code" id="code" cols="30" rows="10"></textarea>
+    <br>
+    <button type="submit">Submit</button>
+    </form> -->
+
+    <footer class="footer">
+        <div class="copyright">
+            All Rights Reserved &copy; 2022
+            </div>
+    </footer>
+
+</body>
+
+</html>
