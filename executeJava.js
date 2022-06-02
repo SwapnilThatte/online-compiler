@@ -9,12 +9,8 @@ if (!fs.existsSync(outputPath)) {
 }
 
 const executeJava = (filepath) => {
- // console.log(filepath);
   const jobId = path.basename(filepath).split(".")[0];
-  //const outPath = path.join(outputPath, `${jobId}.py`);
-  //console.log(outPath);
 
- //console.log(__dirname);
   return new Promise((resolve, reject) => {
    exec(
       `cd ${__dirname}/code & javac ${jobId}.java & java ${jobId}` ,
