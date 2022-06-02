@@ -12,12 +12,6 @@ app.use(express.json())
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
 
-// Continue from : (49:10)
-// @ https://www.youtube.com/watch?v=RZ66yGyEKFg
-
-
-
-
 app.get('/', (req, res) => {
     const context = {
         prevcode: null,
@@ -29,8 +23,7 @@ app.get('/', (req, res) => {
 
 
 app.post('/', async (req, res) => {
-    // console.log(req.body);
-
+    
     const { language, code } = req.body
 
     if (code === undefined) {
@@ -47,7 +40,6 @@ app.post('/', async (req, res) => {
                 output: output.error,
                 error: rawErr
             }
-            // console.log(`\n____________\n${error.stderr}\n___________\n`);
             return res.render('home', errContext)
         })
         const context = {
@@ -70,13 +62,9 @@ app.post('/', async (req, res) => {
                 output: null,
                 error: rawErr
             }
-            // console.log(`\n____________\n${error.stderr}\n___________\n`);
             return res.render('home', errContext)
         })
-        // console.log(output);
         try {
-            console.log(`\n___________________\n${code}\n__________________\n`);
-            console.log(`\n_______________________\n${output.stdout}\n_____________________\n`);
             const context = {
                 prevcode: code,
                 output: output.stdout,
@@ -99,13 +87,9 @@ app.post('/', async (req, res) => {
                 output: null,
                 error: rawErr
             }
-            // console.log(`\n____________\n${error.stderr}\n___________\n`);
             return res.render('home', errContext)
         })
-        // console.log(output);
         try {
-            console.log(`\n___________________\n${code}\n__________________\n`);
-            console.log(`\n_______________________\n${output.stdout}\n_____________________\n`);
             const context = {
                 prevcode: code,
                 output: output.stdout,
@@ -128,13 +112,9 @@ app.post('/', async (req, res) => {
                 output: null,
                 error: rawErr
             }
-            // console.log(`\n____________\n${error.stderr}\n___________\n`);
             return res.render('home', errContext)
         })
-        // console.log(output);
         try {
-            console.log(`\n___________________\n${code}\n__________________\n`);
-            console.log(`\n_______________________\n${output.stdout}\n_____________________\n`);
             const context = {
                 prevcode: code,
                 output: output.stdout,
@@ -144,10 +124,6 @@ app.post('/', async (req, res) => {
         }
         catch (err) { }
     }
-
-    
-    
-
 })
 
 app.listen(5000, () => {
