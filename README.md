@@ -1,5 +1,4 @@
 # online-compiler
-![Online Compiler UI](online compiler image-1.png)
 This Compiler supports C, C++, Python, Javascript languages
 To run use this compiler on your local machine follow below steps
 **Use git bash or linux terminal for better experience**
