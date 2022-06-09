@@ -2,6 +2,7 @@
 > # Preview
 ![](online%20compiler%20image-1.PNG)
 ![](online%20compiler%20image-2.PNG)
+![](online%20compiler%20image-3.PNG)
 
 > # Tech stack used
 Node JS\
