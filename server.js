@@ -1,23 +1,22 @@
 const express = require('express')
+
 const { generateFile } = require('./generateFile')
+
 const { executePython } = require('./executePython')
 const { executeJS } = require('./executeJS')
 const { executeCpp } = require('./executeCpp')
 const { executeC } = require('./executeC')
 
 const app = express()
+const PORT = process.env.PORT || 5000
 
+// Middlewares 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
 
-// Continue from : (49:10)
-// @ https://www.youtube.com/watch?v=RZ66yGyEKFg
-
-
-
-
+// GET REQUESTS
 app.get('/', (req, res) => {
     const context = {
         prevcode: null,
@@ -27,9 +26,18 @@ app.get('/', (req, res) => {
     res.render('home', context)
 })
 
+app.get('/about', (req, res) => {
+    return res.render('about')
+})
+
+
+
+// POST REQUESTS
+
+// '/' this endpoint is for compiler
+// '/about' this endpint is for about section
 
 app.post('/', async (req, res) => {
-    // console.log(req.body);
 
     const { language, code } = req.body
 
@@ -39,47 +47,52 @@ app.post('/', async (req, res) => {
 
     const filePath = await generateFile(language, code).catch()
 
+
     if (language === 'js') {
-        const output = await executeJS(filePath).catch((err) => {
-            let rawErr = String(error.error)
-            const errContext = {
-                prevcode: code,
-                output: output.error,
-                error: rawErr
-            }
-            // console.log(`\n____________\n${error.stderr}\n___________\n`);
-            return res.render('home', errContext)
-        })
-        const context = {
-            prevcode : code,
-            error : null,
-            output: output.stdout
-        }
-        res.render('home', context)
-    }
-
-    if (language === 'py') {
-        const output = await executePython(filePath).catch((error) => {
-
-            let rawErr = String(error.error)
-            let toShowErr = rawErr.split(',')[1]
-            console.log(toShowErr);
-            console.log('Error Occoured while executing');
+        // Executing JS files 
+        const output = await executeJS(filePath).catch((error) => {
+            // If any occours in code exection following block of code is executed
+            let rawErr = error.stderr
             const errContext = {
                 prevcode: code,
                 output: null,
-                error: rawErr
+                // Converting JSON object into JSON string
+                error: JSON.stringify(rawErr)
             }
-            // console.log(`\n____________\n${error.stderr}\n___________\n`);
             return res.render('home', errContext)
         })
-        // console.log(output);
+        // If file execution is successful 
         try {
-            console.log(`\n___________________\n${code}\n__________________\n`);
-            console.log(`\n_______________________\n${output.stdout}\n_____________________\n`);
             const context = {
                 prevcode: code,
-                output: output.stdout,
+                // Converting JSON object into JSON string
+                output: JSON.stringify(output.stdout),
+                error: output.error
+            }
+            return res.render('home', context)
+        }
+        catch (err) { }
+    }
+
+    if (language === 'py') {
+        // Executing Python files 
+        const output = await executePython(filePath).catch(error => {
+        // If any occours in code exection following block of code is executed
+            let rawErr = error.stderr
+            const errContext = {
+                prevcode: code,
+                output: null,
+                // Converting JSON object to JSON string
+                error: JSON.stringify(rawErr)
+            }
+            return res.render('home', errContext)
+        })
+        // If file execution is successful
+        try {
+            const context = {
+                prevcode: code,
+                // Converting JSON object into JSON string
+                output: JSON.stringify(output.stdout),
                 error: output.error
             }
             return res.render('home', context)
@@ -88,27 +101,23 @@ app.post('/', async (req, res) => {
     }
 
     if (language === 'cpp') {
-         const output = await executeCpp(filePath).catch((error) => {
-
-            let rawErr = String(error.error)
-            let toShowErr = rawErr.split(',')[1]
-            console.log(toShowErr);
-            console.log('Error Occoured while executing');
+         // Executing C++ files 
+        const output = await executeCpp(filePath).catch((error) => {
+        // If any occours in code exection following block of code is executed
+            let rawErr = error.stderr
             const errContext = {
                 prevcode: code,
                 output: null,
-                error: rawErr
+                // Converting JSON object to JSON string
+                error: JSON.stringify(rawErr)
             }
-            // console.log(`\n____________\n${error.stderr}\n___________\n`);
             return res.render('home', errContext)
         })
-        // console.log(output);
+        // If execution of file is successful
         try {
-            console.log(`\n___________________\n${code}\n__________________\n`);
-            console.log(`\n_______________________\n${output.stdout}\n_____________________\n`);
             const context = {
                 prevcode: code,
-                output: output.stdout,
+                output: JSON.stringify(output.stdout),
                 error: output.error
             }
             return res.render('home', context)
@@ -117,39 +126,32 @@ app.post('/', async (req, res) => {
     }
 
     if (language === 'c') {
+        // Executing C files
          const output = await executeC(filePath).catch((error) => {
-
-            let rawErr = String(error.error)
-            let toShowErr = rawErr.split(',')[1]
-            console.log(toShowErr);
-            console.log('Error Occoured while executing');
+        // If any occours in code exection following block of code is executed
+            let rawErr = error.stderr
             const errContext = {
                 prevcode: code,
                 output: null,
-                error: rawErr
+                // Converting JSON object into JSON string
+                error: JSON.stringify(rawErr)
             }
-            // console.log(`\n____________\n${error.stderr}\n___________\n`);
             return res.render('home', errContext)
         })
-        // console.log(output);
+        // If execution of file is successful
         try {
-            console.log(`\n___________________\n${code}\n__________________\n`);
-            console.log(`\n_______________________\n${output.stdout}\n_____________________\n`);
             const context = {
                 prevcode: code,
-                output: output.stdout,
+                // Converting JSON object into JSON string
+                output: JSON.stringify(output.stdout),
                 error: output.error
             }
             return res.render('home', context)
         }
         catch (err) { }
     }
-
-    
-    
-
 })
 
-app.listen(5000, () => {
-    console.log("Server Started at PORT: 5000");
+app.listen(PORT, () => {
+    console.log(`Server Started at PORT: ${PORT}`);
 })

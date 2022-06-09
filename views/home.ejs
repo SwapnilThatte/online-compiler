@@ -6,8 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <!-- <script src="script.js" defer></script> -->
-    <title>Document</title>
+    <script src="script.js"></script>
+    <title>ProCode | Online Compiler</title>
 </head>
 
 <body>
@@ -15,7 +15,7 @@
     <nav class="navbar">
         <div class="logo">ProCode</div>
         <div class="navitems">
-            <a href="#" class="navlink">About this site</a>
+            <a href="/about" class="navlink">About this site</a>
         </div>
     </nav>
 
@@ -30,54 +30,64 @@
                 </select>
                 <br>
                 <% if(prevcode !=null) { %>
-                    <textarea type="text" class="code-input" name="code" id="code" contenteditable="true" required><%= prevcode %></textarea>
-                <% } %>
-
-                <% if(prevcode ==null) { %>
-                    <textarea type="text" class="code-input" name="code" id="code" contenteditable="true" required></textarea>
-
+                    <textarea type="text" class="code-input" name="code" id="code" contenteditable="true"
+                        required><%= prevcode %></textarea>
                     <% } %>
-                    
-                <br>
-                <button type="submit" id="submit_btn" class="code-submit-btn">Submit</button>
+
+                        <% if(prevcode==null) { %>
+                            <textarea type="text" class="code-input" name="code" id="code" contenteditable="true" placeholder="Write Code here"
+                                required></textarea>
+
+                            <% } %>
+
+                                <br>
+                                <button type="submit" id="submit_btn" class="code-submit-btn">Submit</button>
             </form>
         </div>
         <div class="output-section">
             <span class="op-heading">Output</span>
-            <% if(output != null && error == null) {%>
-            <h1 class="op-success">Execution Successful </h1>
-            <p class="op-success-text"><%= output %></p>
+            <% if(output !=null && error==null) {%>
+                <h1 class="op-success">Execution Successful </h1>
+                <p class="op-success-text" id="print_output_area"></p>
                 <% } %>
-                <% if(output==null && error !=null) {%>
-                    <h3 class="op-err">Error</h3>
-                    <p class="op-err-text"><%= error %></p>
+                    <% if(output==null && error !=null) {%>
+                        <h3 class="op-err">Error</h3>
+                        <p class="op-err-text" id="print_error_area"></p>
                         <%}%>
 
         </div>
     </main>
 
-    <!-- <h1>Compiler</h1>
-    <br>
-    <form method="post">
-        <select name="language" id="language">
-            <option value="py">Python</option>
-            <option value="js">JavaScript</option>
-            <option value="cpp">C++</option>
-            <option value="c">C</option>
-            <option value="java">Java</option>
-        </select>
-        <br>
-    <textarea name="code" id="code" cols="30" rows="10"></textarea>
-    <br>
-    <button type="submit">Submit</button>
-    </form> -->
 
     <footer class="footer">
         <div class="copyright">
             All Rights Reserved &copy; 2022
-            </div>
+        </div>
     </footer>
 
 </body>
+
+<script>
+    let raw_op_string = '<%=output%>'
+    let raw_error_string = '<%= error %>'
+    if (raw_error_string == "" && raw_op_string != "") {
+        console.log(raw_op_string == "");
+        let final_op_string = ''
+        const output_area = document.getElementById('print_output_area')
+        for (let i = 5; i < raw_op_string.length - 5; i++) {
+            final_op_string += raw_op_string.charAt(i)
+        }
+        console.log('Inside SUCCESS');
+        output_area.innerText = final_op_string
+    }
+    if (raw_error_string != "" && raw_op_string == "") {
+        console.log(raw_error_string);
+        const err_area = document.getElementById('print_error_area')
+        for (let i = 127; i < raw_error_string.length - 5; i++) {
+            err_area.innerText += raw_error_string.charAt(i)
+        }
+    }
+
+</script>
 
 </html>

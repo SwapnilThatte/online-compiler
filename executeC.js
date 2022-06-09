@@ -1,27 +1,18 @@
 const { exec } = require("child_process");
-const fs = require("fs");
 const path = require("path");
 
-const outputPath = path.join(__dirname, "outputs");
+const executeC = filepath => {
 
-if (!fs.existsSync(outputPath)) {
-  fs.mkdirSync(outputPath, { recursive: true });
-}
-
-const executeC = (filepath) => {
- // console.log(filepath);
   const jobId = path.basename(filepath).split(".")[0];
-  //const outPath = path.join(outputPath, `${jobId}.py`);
-  //console.log(outPath);
-
- //console.log(__dirname);
   return new Promise((resolve, reject) => {
+    // Pipelining the commands to execute C file
     exec(
       `cd ${__dirname}/code & g++ -o ${jobId} ${jobId}.c & ${jobId}.exe` ,
       (error, stdout, stderr) => {
+        //Returning the error as JSON object while rejecting the promise
         error && reject({'error': error, 'stderr': stderr });
-        console.log(`ERR: ${error}\nSTDERR: ${stderr}`);
         stderr && reject(stderr);
+        // Returning the output as JSON object
         resolve({'stdout':stdout, 'error':error})
       }
     );
@@ -29,5 +20,5 @@ const executeC = (filepath) => {
 };
 
 module.exports = {
-  executeC,
+  executeC
 };
