@@ -15,8 +15,10 @@ EJS (as template engine)
 > # Important
 This web application currently supports C, C++, Python and Javascript Languages
 
-> # To run the application on your local machine
-> 
+> # Prerequsites
+NodeJS must be installed in order to use the application
+
+> # To run the application on your local machine 
 1) **_npm install_**
 2) **_npm run devstart_**
 3) **_goto localhost on port 5000_**
