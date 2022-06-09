@@ -11,6 +11,11 @@ EJS (as template engine)
 > # Modules used
  File Server(FS)\
  Child-process
+ 
+ > # Features
+#### Clean and clear UI
+#### Easy to use
+#### Supports multiple languages
 
 > # Important
 This web application currently supports C, C++, Python and Javascript Languages
